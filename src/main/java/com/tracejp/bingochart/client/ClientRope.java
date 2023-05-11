@@ -10,6 +10,6 @@ import src.main.java.com.tracejp.bingochart.common.domain.base.Connector;
  */
 public class ClientRope {
 
-    public static Connector connector;
+    public static Connector server;
 
 }
