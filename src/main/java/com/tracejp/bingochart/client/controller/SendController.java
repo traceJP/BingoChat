@@ -25,7 +25,7 @@ public class SendController implements IController {
 
     @Override
     public ResponseMapping getResponseMapping() {
-        return ResponseMapping.SEND;
+        return ResponseMapping.CHAT_REALTIME_MESSAGE;
     }
 
 }

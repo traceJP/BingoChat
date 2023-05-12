@@ -1,6 +1,7 @@
 package src.main.java.com.tracejp.bingochart.client;
 
 import src.main.java.com.tracejp.bingochart.client.gui.ChatGUI;
+import src.main.java.com.tracejp.bingochart.client.gui.listener.ChatGUIListener;
 
 import javax.swing.*;
 
@@ -35,6 +36,8 @@ public class ClientGUI implements Runnable {
         chatGUI.initChatGUI();
         clientGUI.setContentPane(chatGUI.chatPage);
         clientGUI.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        ChatGUIListener chatGUIListener = new ChatGUIListener(chatGUI);
+        chatGUIListener.initAllListener();
     }
 
 }

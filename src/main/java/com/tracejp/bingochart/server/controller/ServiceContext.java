@@ -2,7 +2,7 @@ package src.main.java.com.tracejp.bingochart.server.controller;
 
 import src.main.java.com.tracejp.bingochart.common.domain.Message;
 import src.main.java.com.tracejp.bingochart.common.domain.RequestMapping;
-import src.main.java.com.tracejp.bingochart.common.domain.base.Connector;
+import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 import src.main.java.com.tracejp.bingochart.common.utils.Singleton;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,7 +25,7 @@ public class ServiceContext extends Singleton<ServiceContext> {
 
     public void handleMessage(Message message, Connector connector, RequestMapping mapping) {
         IController iController = controllerCollections.get(mapping);
-        Message response = iController.handlerMessage(message.getParams());
+        Message response = iController.handlerMessage(message.getParams(), connector);
         if (response != null) {
             connector.sendMessage(response);
         }
@@ -33,9 +33,23 @@ public class ServiceContext extends Singleton<ServiceContext> {
 
 
     private void addController() {
-        SendController sendController = new SendController();
-        controllerCollections.put(sendController.getRequestMapping(), sendController);
+        // 映射控制器
+        OfflineController offlineController = new OfflineController();
+        OnlineController onlineController = new OnlineController();
+        QueryChatLogController queryChatLogController = new QueryChatLogController();
+        QueryFontConfigController queryFontConfigController = new QueryFontConfigController();
+        QueryRoomInfo queryRoomInfo = new QueryRoomInfo();
+        SaveFontConfigController saveFontConfigController = new SaveFontConfigController();
+        SendMessageController sendMessageController = new SendMessageController();
 
+        // 收集
+        controllerCollections.put(offlineController.getRequestMapping(), offlineController);
+        controllerCollections.put(onlineController.getRequestMapping(), onlineController);
+        controllerCollections.put(queryChatLogController.getRequestMapping(), queryChatLogController);
+        controllerCollections.put(queryFontConfigController.getRequestMapping(), queryFontConfigController);
+        controllerCollections.put(queryRoomInfo.getRequestMapping(), queryRoomInfo);
+        controllerCollections.put(saveFontConfigController.getRequestMapping(), saveFontConfigController);
+        controllerCollections.put(sendMessageController.getRequestMapping(), sendMessageController);
     }
 
 }

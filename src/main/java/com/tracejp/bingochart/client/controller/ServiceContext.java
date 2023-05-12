@@ -2,7 +2,7 @@ package src.main.java.com.tracejp.bingochart.client.controller;
 
 import src.main.java.com.tracejp.bingochart.common.domain.Message;
 import src.main.java.com.tracejp.bingochart.common.domain.ResponseMapping;
-import src.main.java.com.tracejp.bingochart.common.domain.base.Connector;
+import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 import src.main.java.com.tracejp.bingochart.common.utils.Singleton;
 
 import java.util.concurrent.ConcurrentHashMap;

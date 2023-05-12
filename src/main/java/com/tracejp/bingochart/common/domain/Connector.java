@@ -1,6 +1,4 @@
-package src.main.java.com.tracejp.bingochart.common.domain.base;
-
-import src.main.java.com.tracejp.bingochart.common.domain.Message;
+package src.main.java.com.tracejp.bingochart.common.domain;
 
 import java.io.*;
 import java.net.Socket;

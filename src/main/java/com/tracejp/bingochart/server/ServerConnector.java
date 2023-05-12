@@ -1,7 +1,7 @@
 package src.main.java.com.tracejp.bingochart.server;
 
 import src.main.java.com.tracejp.bingochart.common.domain.Message;
-import src.main.java.com.tracejp.bingochart.common.domain.base.Connector;
+import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 import src.main.java.com.tracejp.bingochart.server.controller.ServiceContext;
 
 import java.net.Socket;

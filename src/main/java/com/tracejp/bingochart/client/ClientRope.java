@@ -1,6 +1,6 @@
 package src.main.java.com.tracejp.bingochart.client;
 
-import src.main.java.com.tracejp.bingochart.common.domain.base.Connector;
+import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 
 /**
  * <p>  <p/>

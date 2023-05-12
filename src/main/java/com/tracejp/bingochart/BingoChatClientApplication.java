@@ -1,19 +1,6 @@
 package src.main.java.com.tracejp.bingochart;
 
-import src.main.java.com.tracejp.bingochart.client.ClientConnector;
 import src.main.java.com.tracejp.bingochart.client.ClientGUI;
-import src.main.java.com.tracejp.bingochart.client.ClientRope;
-import src.main.java.com.tracejp.bingochart.common.domain.Message;
-import src.main.java.com.tracejp.bingochart.common.domain.RequestMapping;
-import src.main.java.com.tracejp.bingochart.common.domain.base.Connector;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
-
-import static src.main.java.com.tracejp.bingochart.common.constant.AddressConstant.SERVER_ADDRESS_DEFAULT;
-import static src.main.java.com.tracejp.bingochart.common.constant.AddressConstant.SERVER_PORT_DEFAULT;
 
 /**
  * <p> 客户端启动类 <p/>
