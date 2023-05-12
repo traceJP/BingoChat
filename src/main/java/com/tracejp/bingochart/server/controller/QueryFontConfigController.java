@@ -4,7 +4,7 @@ import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 import src.main.java.com.tracejp.bingochart.common.domain.Message;
 import src.main.java.com.tracejp.bingochart.common.domain.RequestMapping;
 import src.main.java.com.tracejp.bingochart.common.domain.ResponseMapping;
-import src.main.java.com.tracejp.bingochart.common.utils.UUIDUtil;
+import src.main.java.com.tracejp.bingochart.common.utils.UUIDUtils;
 import src.main.java.com.tracejp.bingochart.server.ServerRope;
 import src.main.java.com.tracejp.bingochart.server.entity.FontConfigEntity;
 
@@ -32,7 +32,7 @@ public class QueryFontConfigController implements IController {
         responseParams.put("font_size", config.getSize());
         responseParams.put("font_style", config.getStyle());
         responseParams.put("font_color", config.getColor());
-        return new Message(UUIDUtil.getUUID(), ResponseMapping.FONT_CONFIG, responseParams);
+        return new Message(UUIDUtils.getUUID(), ResponseMapping.FONT_CONFIG, responseParams);
     }
 
     @Override

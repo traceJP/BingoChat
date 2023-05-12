@@ -12,16 +12,19 @@ public class UserEntity {
 
     private String uuid;
 
-    private String nickName;
+    /**
+     * 唯一
+     */
+    private String username;
 
     private Connector connector;
 
     public UserEntity() {
     }
 
-    public UserEntity(String uuid, String nickName, Connector connector) {
+    public UserEntity(String uuid, String username, Connector connector) {
         this.uuid = uuid;
-        this.nickName = nickName;
+        this.username = username;
         this.connector = connector;
     }
 
@@ -33,12 +36,12 @@ public class UserEntity {
         this.uuid = uuid;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Connector getConnector() {

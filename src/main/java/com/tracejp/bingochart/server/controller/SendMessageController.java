@@ -4,7 +4,7 @@ import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 import src.main.java.com.tracejp.bingochart.common.domain.Message;
 import src.main.java.com.tracejp.bingochart.common.domain.RequestMapping;
 import src.main.java.com.tracejp.bingochart.common.domain.ResponseMapping;
-import src.main.java.com.tracejp.bingochart.common.utils.UUIDUtil;
+import src.main.java.com.tracejp.bingochart.common.utils.UUIDUtils;
 import src.main.java.com.tracejp.bingochart.server.ServerRope;
 import src.main.java.com.tracejp.bingochart.server.entity.ChatMessageEntity;
 
@@ -33,7 +33,7 @@ public class SendMessageController implements IController {
         ServerRope.onlineConnector.forEach(item -> {
             if (item != null && item != connector) {
                 Message redirectMessage = new Message(
-                        UUIDUtil.getUUID(),
+                        UUIDUtils.getUUID(),
                         ResponseMapping.CHAT_REALTIME_MESSAGE,
                         Collections.singletonMap("message", message)
                 );

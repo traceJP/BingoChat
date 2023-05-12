@@ -1,9 +1,13 @@
 package src.main.java.com.tracejp.bingochart.client.gui.listener;
 
+import src.main.java.com.tracejp.bingochart.client.ClientRope;
 import src.main.java.com.tracejp.bingochart.client.gui.ChatGUI;
+import src.main.java.com.tracejp.bingochart.common.domain.Message;
+import src.main.java.com.tracejp.bingochart.common.domain.RequestMapping;
+import src.main.java.com.tracejp.bingochart.common.utils.UUIDUtils;
 
-import java.awt.event.ActionListener;
-import java.util.function.Consumer;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>  <p/>
@@ -31,9 +35,19 @@ public class ChatGUIListener {
 //        chatGUI.reloadTimeComboBox.addActionListener(e -> new Thread(reloadTimeComboBoxAction()).start());
     }
 
+    // =================================== Action ===================================
+
     private Runnable sendButtonAction() {
         return () -> {
 
+            String rawText = chatGUI.chatInputTextField.getText();
+
+
+            Map<String, Object> requestParams = new HashMap<>();
+            requestParams.put("uuid", ClientRope.getUserUUID());
+            requestParams.put("message", rawText);
+            Message message = new Message(UUIDUtils.getUUID(), RequestMapping.SEND_MESSAGE, requestParams);
+            ClientRope.serverConnector.sendMessage(message);
         };
     }
 

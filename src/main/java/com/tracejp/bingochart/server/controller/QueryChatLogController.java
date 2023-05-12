@@ -4,14 +4,14 @@ import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 import src.main.java.com.tracejp.bingochart.common.domain.Message;
 import src.main.java.com.tracejp.bingochart.common.domain.RequestMapping;
 import src.main.java.com.tracejp.bingochart.common.domain.ResponseMapping;
-import src.main.java.com.tracejp.bingochart.common.utils.UUIDUtil;
+import src.main.java.com.tracejp.bingochart.common.utils.UUIDUtils;
 import src.main.java.com.tracejp.bingochart.server.ServerRope;
 import src.main.java.com.tracejp.bingochart.server.entity.ChatMessageEntity;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p> 查询聊天记录 <p/>
@@ -26,11 +26,13 @@ public class QueryChatLogController implements IController {
     @Override
     public Message handlerMessage(Map<String, Object> params, Connector connector) {
         Integer number = (Integer) params.get("number");
-        List<ChatMessageEntity> chatLog = new ArrayList<>(ServerRope.chatLog);
-        if (chatLog.size() > number) {
-            chatLog = chatLog.subList(0, number);
+        List<String> messages = ServerRope.chatLog.stream()
+                .map(ChatMessageEntity::getMessage)
+                .collect(Collectors.toList());
+        if (messages.size() > number) {
+            messages = messages.subList(0, number);
         }
-        return new Message(UUIDUtil.getUUID(), ResponseMapping.CHAT_LOG, Collections.singletonMap("chatLog", chatLog));
+        return new Message(UUIDUtils.getUUID(), ResponseMapping.CHAT_LOG, Collections.singletonMap("chatLog", messages));
     }
 
     @Override

@@ -23,7 +23,7 @@ public class OfflineController implements IController {
         String uuid = (String) params.get("uuid");
         UserEntity user = ServerRope.onlineUser.remove(uuid);
         connector.closeSocket();
-        System.out.println("用户下线：" + user.getUuid() + " " + user.getNickName());
+        System.out.println("用户下线：" + user.getUuid() + " " + user.getUsername());
         return null;
     }
 

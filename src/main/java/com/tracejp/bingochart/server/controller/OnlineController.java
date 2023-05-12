@@ -24,7 +24,7 @@ public class OnlineController implements IController {
         String nickName = (String) params.get("nick_name");
         UserEntity user = new UserEntity(uuid, nickName, connector);
         ServerRope.onlineUser.put(user.getUuid(), user);
-        System.out.println("用户上线：" + user.getUuid() + " " + user.getNickName());
+        System.out.println("用户上线：" + user.getUuid() + " " + user.getUsername());
         return null;
     }
 

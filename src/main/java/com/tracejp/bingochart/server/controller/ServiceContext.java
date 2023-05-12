@@ -38,7 +38,7 @@ public class ServiceContext extends Singleton<ServiceContext> {
         OnlineController onlineController = new OnlineController();
         QueryChatLogController queryChatLogController = new QueryChatLogController();
         QueryFontConfigController queryFontConfigController = new QueryFontConfigController();
-        QueryRoomInfo queryRoomInfo = new QueryRoomInfo();
+        QueryRoomInfoController queryRoomInfoController = new QueryRoomInfoController();
         SaveFontConfigController saveFontConfigController = new SaveFontConfigController();
         SendMessageController sendMessageController = new SendMessageController();
 
@@ -47,7 +47,7 @@ public class ServiceContext extends Singleton<ServiceContext> {
         controllerCollections.put(onlineController.getRequestMapping(), onlineController);
         controllerCollections.put(queryChatLogController.getRequestMapping(), queryChatLogController);
         controllerCollections.put(queryFontConfigController.getRequestMapping(), queryFontConfigController);
-        controllerCollections.put(queryRoomInfo.getRequestMapping(), queryRoomInfo);
+        controllerCollections.put(queryRoomInfoController.getRequestMapping(), queryRoomInfoController);
         controllerCollections.put(saveFontConfigController.getRequestMapping(), saveFontConfigController);
         controllerCollections.put(sendMessageController.getRequestMapping(), sendMessageController);
     }

@@ -25,16 +25,22 @@ public class ServiceContext extends Singleton<ServiceContext> {
 
     public void handleMessage(Message message, Connector connector, ResponseMapping mapping) {
         IController iController = controllerCollections.get(mapping);
-        Message response = iController.handlerMessage(message.getParams());
-        if (response != null) {
-            connector.sendMessage(response);
-        }
+        iController.handlerMessage(message.getParams(), connector);
     }
 
 
     private void addController() {
-        SendController sendController = new SendController();
-        controllerCollections.put(sendController.getResponseMapping(), sendController);
+        // 映射控制器
+        RespChatLogController respChatLogController = new RespChatLogController();
+        RespChatRealtimeMessageController respChatRealtimeMessageController = new RespChatRealtimeMessageController();
+        RespFontConfigController respFontConfigController = new RespFontConfigController();
+        RespRoomInfoController respRoomInfoController = new RespRoomInfoController();
+
+        // 收集
+        controllerCollections.put(respChatLogController.getResponseMapping(), respChatLogController);
+        controllerCollections.put(respChatRealtimeMessageController.getResponseMapping(), respChatRealtimeMessageController);
+        controllerCollections.put(respFontConfigController.getResponseMapping(), respFontConfigController);
+        controllerCollections.put(respRoomInfoController.getResponseMapping(), respRoomInfoController);
     }
 
 }

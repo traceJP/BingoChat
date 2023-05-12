@@ -1,6 +1,6 @@
 package src.main.java.com.tracejp.bingochart.client.controller;
 
-import src.main.java.com.tracejp.bingochart.common.domain.Message;
+import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 import src.main.java.com.tracejp.bingochart.common.domain.ResponseMapping;
 
 import java.util.Map;
@@ -16,7 +16,7 @@ public interface IController {
     /**
      * 处理消息
      */
-    Message handlerMessage(Map<String, Object> params);
+    void handlerMessage(Map<String, Object> params, Connector connector);
 
     ResponseMapping getResponseMapping();
 
