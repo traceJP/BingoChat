@@ -26,9 +26,8 @@ public class ChatGUI extends Singleton<ChatGUI> {
     public JComboBox<String> fontStyleComboBox;
     public JComboBox<String> fontColorComboBox;
     public JComboBox<String> logRowsComboBox;
-    public JComboBox<String> reloadTimeComboBox;
     public JLabel onlineUserNumberLabel;
-    public JTextArea chatLogTextArea;
+    public JTextPane chatLogTextArea;
     public JTextField chatInputTextField;
 
 
@@ -83,27 +82,11 @@ public class ChatGUI extends Singleton<ChatGUI> {
         // 左右边距
         final int marginSide = 30;
 
-        chatLogTextArea = new JTextArea() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                // 绘制线条
-                g.setColor(Color.LIGHT_GRAY);
-                int y = 0;
-                int h = getFontMetrics(getFont()).getHeight();
-                for (int i = 0; i < getLineCount(); i++) {
-                    g.drawLine(
-                            marginSide,
-                            y + h + 3 - g.getFontMetrics().getDescent(),
-                            getWidth() - marginSide,
-                            y + h + 3 - g.getFontMetrics().getDescent()
-                    );
-                    y += h;
-                }
-            }
-        };
+        chatLogTextArea = new JTextPane();
         chatLogTextArea.setFont(new Font("SimSun", Font.PLAIN, 28));
         chatLogTextArea.setMargin(new Insets(0, marginSide, 0, marginSide));
+        chatLogTextArea.setEditable(false);
+        chatLogTextArea.setContentType("text/html");
 
         JScrollPane scrollPane = new JScrollPane(chatLogTextArea);
         main.add(scrollPane, gbc);
@@ -190,6 +173,7 @@ public class ChatGUI extends Singleton<ChatGUI> {
         fontColorComboBox.addItem("黑色");
         fontColorComboBox.addItem("红色");
         fontColorComboBox.addItem("蓝色");
+        fontColorComboBox.addItem("绿色");
 
         JLabel logRowsLabel = new JLabel("LOG");
         logRowsComboBox = new JComboBox<>();
@@ -197,19 +181,11 @@ public class ChatGUI extends Singleton<ChatGUI> {
         logRowsComboBox.addItem("50");
         logRowsComboBox.addItem("100");
 
-        JLabel reloadTimeLabel = new JLabel("RELOAD");
-        reloadTimeComboBox = new JComboBox<>();
-        reloadTimeComboBox.addItem("10");
-        reloadTimeComboBox.addItem("30");
-        reloadTimeComboBox.addItem("60");
-
         // ====================================== main ======================================
         main.add(fontColorLabel);
         main.add(fontColorComboBox);
         main.add(logRowsLabel);
         main.add(logRowsComboBox);
-        main.add(reloadTimeLabel);
-        main.add(reloadTimeComboBox);
 
         return main;
     }

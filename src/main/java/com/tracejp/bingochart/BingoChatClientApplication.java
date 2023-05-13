@@ -17,10 +17,10 @@ public class BingoChatClientApplication {
         // 启动 GUI
         new Thread(new ClientGUI()).start();
         // 与服务器建立连接
-        ClientRope.serverConnector = new ClientConnector(
-                AddressConstant.SERVER_ADDRESS_DEFAULT,
-                AddressConstant.SERVER_PORT_DEFAULT
-        );
+//        ClientRope.serverConnector = new ClientConnector(
+//                AddressConstant.SERVER_ADDRESS_DEFAULT,
+//                AddressConstant.SERVER_PORT_DEFAULT
+//        );
     }
 
 }
