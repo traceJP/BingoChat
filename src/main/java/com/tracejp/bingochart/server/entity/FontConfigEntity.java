@@ -1,7 +1,5 @@
 package src.main.java.com.tracejp.bingochart.server.entity;
 
-import java.awt.*;
-
 /**
  * <p>  <p/>
  *
@@ -12,14 +10,14 @@ public class FontConfigEntity {
 
     private Integer size;
 
-    private String style;
+    private Integer style;
 
-    private Color color;
+    private Integer color;
 
     public FontConfigEntity() {
     }
 
-    public FontConfigEntity(Integer size, String style, Color color) {
+    public FontConfigEntity(Integer size, Integer style, Integer color) {
         this.size = size;
         this.style = style;
         this.color = color;
@@ -33,19 +31,19 @@ public class FontConfigEntity {
         this.size = size;
     }
 
-    public String getStyle() {
+    public Integer getStyle() {
         return style;
     }
 
-    public void setStyle(String style) {
+    public void setStyle(Integer style) {
         this.style = style;
     }
 
-    public Color getColor() {
+    public Integer getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(Integer color) {
         this.color = color;
     }
 

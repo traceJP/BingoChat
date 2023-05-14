@@ -6,7 +6,6 @@ import src.main.java.com.tracejp.bingochart.common.domain.RequestMapping;
 import src.main.java.com.tracejp.bingochart.server.ServerRope;
 import src.main.java.com.tracejp.bingochart.server.entity.FontConfigEntity;
 
-import java.awt.*;
 import java.util.Map;
 
 /**
@@ -20,9 +19,9 @@ public class SaveFontConfigController implements IController {
     @Override
     public Message handlerMessage(Map<String, Object> params, Connector connector) {
         String uuid = (String) params.get("uuid");
-        Integer fontSize = (Integer) params.get("font_ize");
-        String fontStyle = (String) params.get("font_style");
-        Color fontColor = (Color) params.get("font_color");
+        Integer fontSize = (Integer) params.get("font_size");
+        Integer fontStyle = (Integer) params.get("font_style");
+        Integer fontColor = (Integer) params.get("font_color");
         FontConfigEntity fontConfigEntity = new FontConfigEntity(fontSize, fontStyle, fontColor);
         ServerRope.fontConfig.put(uuid, fontConfigEntity);
         return null;

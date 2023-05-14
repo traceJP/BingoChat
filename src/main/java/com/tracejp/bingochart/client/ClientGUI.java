@@ -38,6 +38,7 @@ public class ClientGUI implements Runnable {
         clientGUI.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         ChatGUIListener chatGUIListener = new ChatGUIListener(chatGUI);
         chatGUIListener.initAllListener();
+        chatGUIListener.initResource();
     }
 
 }

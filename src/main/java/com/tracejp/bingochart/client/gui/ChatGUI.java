@@ -25,8 +25,8 @@ public class ChatGUI extends Singleton<ChatGUI> {
     public JComboBox<String> fontSizeComboBox;
     public JComboBox<String> fontStyleComboBox;
     public JComboBox<String> fontColorComboBox;
-    public JComboBox<String> logRowsComboBox;
     public JLabel onlineUserNumberLabel;
+    public JScrollPane chatLogScrollPane;
     public JTextPane chatLogTextArea;
     public JTextField chatInputTextField;
 
@@ -43,9 +43,7 @@ public class ChatGUI extends Singleton<ChatGUI> {
         JPanel main = new JPanel();
         main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
         main.setBorder(BorderFactory.createEmptyBorder(10, 200, 0, 200));
-        main.add(initTopControllerPanel());
-        main.add(Box.createVerticalStrut(5));
-        main.add(initBottomControllerPanel());
+        main.add(initInnerControllerPanel());
         return main;
     }
 
@@ -88,8 +86,8 @@ public class ChatGUI extends Singleton<ChatGUI> {
         chatLogTextArea.setEditable(false);
         chatLogTextArea.setContentType("text/html");
 
-        JScrollPane scrollPane = new JScrollPane(chatLogTextArea);
-        main.add(scrollPane, gbc);
+        chatLogScrollPane = new JScrollPane(chatLogTextArea);
+        main.add(chatLogScrollPane, gbc);
 
         return main;
     }
@@ -112,7 +110,7 @@ public class ChatGUI extends Singleton<ChatGUI> {
     }
 
 
-    private JPanel initTopControllerPanel() {
+    private JPanel initInnerControllerPanel() {
         // ======================================= 布局初始化 =======================================
         JPanel main = new JPanel();
         JPanel firstLine = new JPanel();
@@ -144,6 +142,13 @@ public class ChatGUI extends Singleton<ChatGUI> {
         fontStyleComboBox.addItem("倾斜");
         fontStyleComboBox.addItem("加粗");
 
+        JLabel fontColorLabel = new JLabel("COLOR");
+        fontColorComboBox = new JComboBox<>();
+        fontColorComboBox.addItem("黑色");
+        fontColorComboBox.addItem("红色");
+        fontColorComboBox.addItem("蓝色");
+        fontColorComboBox.addItem("绿色");
+
         // ====================================== firstLine ======================================
         firstLine.add(sendButton);
         firstLine.add(refreshButton);
@@ -156,36 +161,9 @@ public class ChatGUI extends Singleton<ChatGUI> {
         secondLine.add(fontSizeComboBox);
         secondLine.add(fontStyleLabel);
         secondLine.add(fontStyleComboBox);
+        secondLine.add(fontColorLabel);
+        secondLine.add(fontColorComboBox);
         main.add(secondLine);
-
-        return main;
-    }
-
-    private JPanel initBottomControllerPanel() {
-        // ======================================= 布局初始化 =======================================
-        JPanel main = new JPanel();
-        main.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 0));
-        main.setBorder(BorderFactory.createEmptyBorder(10, 30, 0, 30));
-
-        // ======================================= 组件初始化 =======================================
-        JLabel fontColorLabel = new JLabel("COLOR");
-        fontColorComboBox = new JComboBox<>();
-        fontColorComboBox.addItem("黑色");
-        fontColorComboBox.addItem("红色");
-        fontColorComboBox.addItem("蓝色");
-        fontColorComboBox.addItem("绿色");
-
-        JLabel logRowsLabel = new JLabel("LOG");
-        logRowsComboBox = new JComboBox<>();
-        logRowsComboBox.addItem("10");
-        logRowsComboBox.addItem("50");
-        logRowsComboBox.addItem("100");
-
-        // ====================================== main ======================================
-        main.add(fontColorLabel);
-        main.add(fontColorComboBox);
-        main.add(logRowsLabel);
-        main.add(logRowsComboBox);
 
         return main;
     }
