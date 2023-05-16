@@ -1,8 +1,12 @@
 package src.main.java.com.tracejp.bingochart.client.controller;
 
+import src.main.java.com.tracejp.bingochart.client.gui.ChatGUI;
 import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 import src.main.java.com.tracejp.bingochart.common.domain.ResponseMapping;
 
+import javax.swing.text.BadLocationException;
+import javax.swing.text.html.HTMLDocument;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -15,10 +19,18 @@ import java.util.Map;
  */
 public class RespChatRealtimeMessageController implements IController {
 
+    private final ChatGUI chatGUI = ChatGUI.getInstance(ChatGUI.class);
+
+
     @Override
     public void handlerMessage(Map<String, Object> params, Connector connector) {
         String message = (String) params.get("message");
-        System.out.println(message);
+        HTMLDocument document = (HTMLDocument) chatGUI.chatLogTextArea.getDocument();
+        try {
+            document.insertAfterEnd(document.getCharacterElement(document.getLength()), message);
+        } catch (BadLocationException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

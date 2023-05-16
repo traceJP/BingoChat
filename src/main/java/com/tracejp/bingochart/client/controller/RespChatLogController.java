@@ -1,14 +1,18 @@
 package src.main.java.com.tracejp.bingochart.client.controller;
 
+import src.main.java.com.tracejp.bingochart.client.gui.ChatGUI;
 import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 import src.main.java.com.tracejp.bingochart.common.domain.ResponseMapping;
 
+import javax.swing.text.BadLocationException;
+import javax.swing.text.html.HTMLDocument;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 /**
  * <p>  <p/>
- *
+ * <p>
  * 响应类：server.QueryChatLogController
  *
  * @author traceJP
@@ -16,13 +20,21 @@ import java.util.Map;
  */
 public class RespChatLogController implements IController {
 
+    private final ChatGUI chatGUI = ChatGUI.getInstance(ChatGUI.class);
+
+
     @Override
     public void handlerMessage(Map<String, Object> params, Connector connector) {
         //noinspection unchecked
-        List<String> chatLog = (List<String>) params.get("chatLog");
-
-        chatLog.forEach(System.out::println);
-
+        List<String> chatLogs = (List<String>) params.get("chatLog");
+        for (String chatLine : chatLogs) {
+            HTMLDocument document = (HTMLDocument) chatGUI.chatLogTextArea.getDocument();
+            try {
+                document.insertAfterEnd(document.getCharacterElement(document.getLength()), chatLine);
+            } catch (BadLocationException | IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Override

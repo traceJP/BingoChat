@@ -36,9 +36,9 @@ public class ClientGUI implements Runnable {
         chatGUI.initChatGUI();
         clientGUI.setContentPane(chatGUI.chatPage);
         clientGUI.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        ChatGUIListener chatGUIListener = new ChatGUIListener(chatGUI);
+        ChatGUIListener chatGUIListener = new ChatGUIListener();
+        chatGUIListener.initAllResource();
         chatGUIListener.initAllListener();
-        chatGUIListener.initResource();
     }
 
 }

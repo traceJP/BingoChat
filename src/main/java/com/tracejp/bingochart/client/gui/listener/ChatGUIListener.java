@@ -1,7 +1,9 @@
 package src.main.java.com.tracejp.bingochart.client.gui.listener;
 
+import src.main.java.com.tracejp.bingochart.client.ClientGUI;
 import src.main.java.com.tracejp.bingochart.client.ClientRope;
 import src.main.java.com.tracejp.bingochart.client.gui.ChatGUI;
+import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 import src.main.java.com.tracejp.bingochart.common.domain.Message;
 import src.main.java.com.tracejp.bingochart.common.domain.RequestMapping;
 import src.main.java.com.tracejp.bingochart.common.utils.StringUtils;
@@ -12,9 +14,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -27,13 +29,14 @@ import java.util.concurrent.TimeUnit;
  */
 public class ChatGUIListener {
 
-    private static final Integer MAX_CHAT_INPUT = 50;
+    private static final int MAX_CHAT_INPUT = 50;
 
-    private final ChatGUI chatGUI;
+    private static final int MAX_QUERY_CHAT_LOG = 50;
 
-    public ChatGUIListener(ChatGUI chatGUI) {
-        this.chatGUI = chatGUI;
-    }
+    private static final int ROOM_INFO_PERIODIC_REFRESH_TIME = 10;
+
+    private final ChatGUI chatGUI = ChatGUI.getInstance(ChatGUI.class);
+
 
     public void initAllListener() {
         chatGUI.sendButton.addActionListener(e -> new Thread(sendButtonAction()).start());
@@ -43,11 +46,62 @@ public class ChatGUIListener {
         chatGUI.fontStyleComboBox.addActionListener(e -> new Thread(this::saveFontConfig).start());
         chatGUI.fontColorComboBox.addActionListener(e -> new Thread(this::saveFontConfig).start());
         chatGUI.chatLogTextArea.getDocument().addDocumentListener(chatLogTextAreaListener());
-//        chatGUI.exitButton.addActionListener(e -> new Thread(exitButtonAction()).start());
+        chatGUI.exitButton.addActionListener(e -> new Thread(exitButtonAction()).start());
+        ClientGUI.clientGUI.addWindowListener(windowListener());
     }
 
-    public void initResource() {
-        // TODO 发送请求获取聊天记录
+    public void initAllResource() {
+        Connector connector = ClientRope.serverConnector;
+        String userUUID = ClientRope.getUserUUID();
+
+        // 获取配置信息
+        Message queryFontConfigMassage = new Message(
+                UUIDUtils.getUUID(),
+                RequestMapping.QUERY_FONT_CONFIG,
+                Collections.singletonMap("uuid", userUUID)
+        );
+        connector.sendMessage(queryFontConfigMassage);
+
+        // 获取聊天记录
+        Message queryChatLogMassage = new Message(
+                UUIDUtils.getUUID(),
+                RequestMapping.QUERY_CHAT_LOG,
+                Collections.singletonMap("number", MAX_QUERY_CHAT_LOG)
+        );
+        connector.sendMessage(queryChatLogMassage);
+
+        // 心跳获取 房间信息
+        Thread thread = new Thread(() -> {
+            for (; ; ) {
+                try {
+                    TimeUnit.SECONDS.sleep(ROOM_INFO_PERIODIC_REFRESH_TIME);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                Message queryRoomInfoMassage = new Message(
+                        UUIDUtils.getUUID(),
+                        RequestMapping.QUERY_ROOM_INFO,
+                        null
+                );
+                connector.sendMessage(queryRoomInfoMassage);
+            }
+        });
+        thread.setDaemon(true);  // 守护 ClientGUI 线程
+        thread.start();
+    }
+
+    // =================================== Client ===================================
+
+    private WindowListener windowListener() {
+        return new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                Connector connector = ClientRope.serverConnector;
+                if (connector != null && connector.getSocket().isConnected()) {
+                    new Thread(exitButtonAction()).start();
+                }
+            }
+        };
     }
 
     // =================================== Action ===================================
@@ -68,12 +122,12 @@ public class ChatGUIListener {
                 throw new RuntimeException(e);
             }
 
-            // 发送 TODO 暂时不发送
-//            Map<String, Object> requestParams = new HashMap<>();
-//            requestParams.put("uuid", ClientRope.getUserUUID());
-//            requestParams.put("message", rawText);
-//            Message message = new Message(UUIDUtils.getUUID(), RequestMapping.SEND_MESSAGE, requestParams);
-//            ClientRope.serverConnector.sendMessage(message);
+            // 发送
+            Map<String, Object> requestParams = new HashMap<>();
+            requestParams.put("uuid", ClientRope.getUserUUID());
+            requestParams.put("message", rawText);
+            Message message = new Message(UUIDUtils.getUUID(), RequestMapping.SEND_MESSAGE, requestParams);
+            ClientRope.serverConnector.sendMessage(message);
 
             // 清空输入面板
             chatGUI.chatInputTextField.setText("");
@@ -149,13 +203,36 @@ public class ChatGUIListener {
         }
     }
 
+    private Runnable exitButtonAction() {
+        return () -> {
+            // 发送下线通知
+            Map<String, Object> requestParams = new HashMap<>();
+            requestParams.put("uuid", ClientRope.getUserUUID());
+            final String offLineText = "用户 【 " + ClientRope.username + " 】 下线了...";
+            requestParams.put("message", formatTextBySystemInformToHtml(offLineText));
+            Message sendMessage = new Message(UUIDUtils.getUUID(), RequestMapping.SEND_MESSAGE, requestParams);
+            ClientRope.serverConnector.sendMessage(sendMessage);
+
+            // 服务器下线
+            Message offlineMessage = new Message(
+                    UUIDUtils.getUUID(),
+                    RequestMapping.OFFLINE,
+                    Collections.singletonMap("uuid", ClientRope.getUserUUID())
+            );
+            ClientRope.serverConnector.sendMessage(offlineMessage);
+
+            // TODO 关闭窗口
+
+        };
+    }
+
     /**
      * 包装文本为 HTML 格式
      *
      * @param chatText 聊天文本
      * @return 包装后的 HTML 格式文本
      */
-    public String formatTextToHtml(String chatText) {
+    private String formatTextToHtml(String chatText) {
         // 字符格式化
         if (chatText.length() > MAX_CHAT_INPUT) {
             chatText = chatText.substring(0, MAX_CHAT_INPUT) + "...";
@@ -220,6 +297,10 @@ public class ChatGUIListener {
 
         // 拼接
         return "<font style=\"" + styleCss + colorCss + sizeCss + "\">" + username + "：" + chatText + "</font><br>";
+    }
+
+    private String formatTextBySystemInformToHtml(String rawText) {
+        return "<font style=\"color: red; font-size: 18px;\">" + rawText + "</font><br>";
     }
 
 }

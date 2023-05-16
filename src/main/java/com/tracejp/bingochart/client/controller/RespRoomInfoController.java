@@ -1,5 +1,6 @@
 package src.main.java.com.tracejp.bingochart.client.controller;
 
+import src.main.java.com.tracejp.bingochart.client.gui.ChatGUI;
 import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 import src.main.java.com.tracejp.bingochart.common.domain.ResponseMapping;
 
@@ -15,12 +16,13 @@ import java.util.Map;
  */
 public class RespRoomInfoController implements IController {
 
+    private final ChatGUI chatGUI = ChatGUI.getInstance(ChatGUI.class);
+
+
     @Override
     public void handlerMessage(Map<String, Object> params, Connector connector) {
         Integer onlineNumber = (Integer) params.get("online_number");
-
-        System.out.println("房间信息：" + onlineNumber);
-
+        chatGUI.onlineUserNumberLabel.setText(onlineNumber.toString());
     }
 
     @Override

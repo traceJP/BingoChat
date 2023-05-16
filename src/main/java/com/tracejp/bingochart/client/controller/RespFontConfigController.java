@@ -1,5 +1,6 @@
 package src.main.java.com.tracejp.bingochart.client.controller;
 
+import src.main.java.com.tracejp.bingochart.client.gui.ChatGUI;
 import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 import src.main.java.com.tracejp.bingochart.common.domain.ResponseMapping;
 
@@ -16,12 +17,23 @@ import java.util.Map;
  */
 public class RespFontConfigController implements IController {
 
+    private final ChatGUI chatGUI = ChatGUI.getInstance(ChatGUI.class);
+
+
     @Override
     public void handlerMessage(Map<String, Object> params, Connector connector) {
         Integer fontSize = (Integer) params.get("font_size");
         String fontStyle = (String) params.get("font_style");
         Color fontColor = (Color) params.get("font_color");
-        System.out.println("字体配置：" + fontSize + " " + fontStyle + " " + fontColor);
+        if (fontSize != null) {
+            chatGUI.fontSizeComboBox.setSelectedIndex(fontSize);
+        }
+        if (fontStyle != null) {
+            chatGUI.fontStyleComboBox.setSelectedItem(fontStyle);
+        }
+        if (fontColor != null) {
+            chatGUI.fontColorComboBox.setSelectedItem(fontColor);
+        }
     }
 
     @Override
