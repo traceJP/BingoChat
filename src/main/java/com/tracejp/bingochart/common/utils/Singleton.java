@@ -1,7 +1,7 @@
 package src.main.java.com.tracejp.bingochart.common.utils;
 
 /**
- * <p> 单例工具 <p/>
+ * <p> 单例工具 注意：此单例返回值为序列化的结果，不允许修改对象 ; 全局对象请使用 Rope <p/>
  *
  * @author traceJP
  * @since 2023/5/7 10:53

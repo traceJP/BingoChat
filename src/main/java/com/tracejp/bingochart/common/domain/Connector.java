@@ -41,9 +41,9 @@ public abstract class Connector {
             try {
                 InputStream inputStream = socket.getInputStream();
                 ObjectInputStream objectInputStream;
-                for (; ; ) {
+                while (!socket.isClosed()) {
+                    // TODO FIXED 客户端这里启了一个线程 然后在GUI出现后 该线程就终止了
                     // 优化 需要改成心跳连接机制
-                    if (socket.isClosed()) break;
                     if (inputStream.available() > 0) {
                         objectInputStream = new ObjectInputStream(inputStream);
                         Message message = (Message) objectInputStream.readObject();
@@ -80,7 +80,7 @@ public abstract class Connector {
             OutputStream outputStream = socket.getOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
             objectOutputStream.writeObject(message);
-            // 消息重叠问题解决
+            // 防止消息重叠
             Thread.sleep(100);
         } catch (Exception e) {
             e.printStackTrace();

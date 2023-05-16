@@ -2,6 +2,7 @@ package src.main.java.com.tracejp.bingochart.client;
 
 import src.main.java.com.tracejp.bingochart.client.gui.ChatGUI;
 import src.main.java.com.tracejp.bingochart.client.gui.listener.ChatGUIListener;
+import src.main.java.com.tracejp.bingochart.common.constant.AddressConstant;
 
 import javax.swing.*;
 
@@ -32,13 +33,21 @@ public class ClientGUI implements Runnable {
     }
 
     private void openChatPage() {
-        ChatGUI chatGUI = ChatGUI.getInstance(ChatGUI.class);
+        // 与服务器建立连接
+        ClientRope.serverConnector = new ClientConnector(
+                AddressConstant.SERVER_ADDRESS_DEFAULT,
+                AddressConstant.SERVER_PORT_DEFAULT
+        );
+
+        // 初始化聊天页面
+        ChatGUI chatGUI = new ChatGUI();
         chatGUI.initChatGUI();
         clientGUI.setContentPane(chatGUI.chatPage);
         clientGUI.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        ClientRope.chatGUI = chatGUI;
         ChatGUIListener chatGUIListener = new ChatGUIListener();
-        chatGUIListener.initAllResource();
         chatGUIListener.initAllListener();
+        chatGUIListener.initAllResource();
     }
 
 }

@@ -1,5 +1,6 @@
 package src.main.java.com.tracejp.bingochart.client;
 
+import src.main.java.com.tracejp.bingochart.client.gui.ChatGUI;
 import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 import src.main.java.com.tracejp.bingochart.common.utils.MD5Utils;
 
@@ -24,5 +25,7 @@ public class ClientRope {
     public static String getUserUUID() {
         return MD5Utils.parseMd5(username);
     }
+
+    public static ChatGUI chatGUI;
 
 }

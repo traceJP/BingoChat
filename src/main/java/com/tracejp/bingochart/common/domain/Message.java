@@ -71,6 +71,7 @@ public class Message implements Serializable {
         return "Message{" +
                 "id='" + id + '\'' +
                 ", request=" + request +
+                ", response=" + response +
                 ", params=" + params +
                 '}';
     }

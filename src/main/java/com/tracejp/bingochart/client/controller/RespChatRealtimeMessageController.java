@@ -1,5 +1,6 @@
 package src.main.java.com.tracejp.bingochart.client.controller;
 
+import src.main.java.com.tracejp.bingochart.client.ClientRope;
 import src.main.java.com.tracejp.bingochart.client.gui.ChatGUI;
 import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 import src.main.java.com.tracejp.bingochart.common.domain.ResponseMapping;
@@ -19,13 +20,10 @@ import java.util.Map;
  */
 public class RespChatRealtimeMessageController implements IController {
 
-    private final ChatGUI chatGUI = ChatGUI.getInstance(ChatGUI.class);
-
-
     @Override
     public void handlerMessage(Map<String, Object> params, Connector connector) {
         String message = (String) params.get("message");
-        HTMLDocument document = (HTMLDocument) chatGUI.chatLogTextArea.getDocument();
+        HTMLDocument document = (HTMLDocument) ClientRope.chatGUI.chatLogTextArea.getDocument();
         try {
             document.insertAfterEnd(document.getCharacterElement(document.getLength()), message);
         } catch (BadLocationException | IOException e) {

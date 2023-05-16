@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * <p> 上线 <p/>
  *
- * 参数要求：string uuid, string nick_name
+ * 参数要求：string uuid, string username
  *
  * @author traceJP
  * @since 2023/5/12 8:24
@@ -21,7 +21,7 @@ public class OnlineController implements IController {
     @Override
     public Message handlerMessage(Map<String, Object> params, Connector connector) {
         String uuid = (String) params.get("uuid");
-        String nickName = (String) params.get("nick_name");
+        String nickName = (String) params.get("username");
         UserEntity user = new UserEntity(uuid, nickName, connector);
         ServerRope.onlineUser.put(user.getUuid(), user);
         System.out.println("用户上线：" + user.getUuid() + " " + user.getUsername());

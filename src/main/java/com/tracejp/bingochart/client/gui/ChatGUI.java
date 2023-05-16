@@ -1,7 +1,5 @@
 package src.main.java.com.tracejp.bingochart.client.gui;
 
-import src.main.java.com.tracejp.bingochart.common.utils.Singleton;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,7 +9,7 @@ import java.awt.*;
  * @author traceJP
  * @since 2023/5/9 8:55
  */
-public class ChatGUI extends Singleton<ChatGUI> {
+public class ChatGUI {
 
     /**
      * root

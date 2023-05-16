@@ -35,7 +35,7 @@ public class ChatGUIListener {
 
     private static final int ROOM_INFO_PERIODIC_REFRESH_TIME = 10;
 
-    private final ChatGUI chatGUI = ChatGUI.getInstance(ChatGUI.class);
+    private final ChatGUI chatGUI = ClientRope.chatGUI;
 
 
     public void initAllListener() {
@@ -53,6 +53,17 @@ public class ChatGUIListener {
     public void initAllResource() {
         Connector connector = ClientRope.serverConnector;
         String userUUID = ClientRope.getUserUUID();
+
+        // 上线
+        HashMap<String, Object> onlineMessageParams = new HashMap<>();
+        onlineMessageParams.put("uuid", userUUID);
+        onlineMessageParams.put("username", ClientRope.username);
+        Message onlineMassage = new Message(
+                UUIDUtils.getUUID(),
+                RequestMapping.ONLINE,
+                onlineMessageParams
+        );
+        connector.sendMessage(onlineMassage);
 
         // 获取配置信息
         Message queryFontConfigMassage = new Message(
@@ -73,17 +84,17 @@ public class ChatGUIListener {
         // 心跳获取 房间信息
         Thread thread = new Thread(() -> {
             for (; ; ) {
-                try {
-                    TimeUnit.SECONDS.sleep(ROOM_INFO_PERIODIC_REFRESH_TIME);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
                 Message queryRoomInfoMassage = new Message(
                         UUIDUtils.getUUID(),
                         RequestMapping.QUERY_ROOM_INFO,
                         null
                 );
                 connector.sendMessage(queryRoomInfoMassage);
+                try {
+                    TimeUnit.SECONDS.sleep(ROOM_INFO_PERIODIC_REFRESH_TIME);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         thread.setDaemon(true);  // 守护 ClientGUI 线程
@@ -98,7 +109,7 @@ public class ChatGUIListener {
             public void windowClosing(WindowEvent e) {
                 Connector connector = ClientRope.serverConnector;
                 if (connector != null && connector.getSocket().isConnected()) {
-                    new Thread(exitButtonAction()).start();
+                    exitButtonAction().run();
                 }
             }
         };
@@ -125,7 +136,7 @@ public class ChatGUIListener {
             // 发送
             Map<String, Object> requestParams = new HashMap<>();
             requestParams.put("uuid", ClientRope.getUserUUID());
-            requestParams.put("message", rawText);
+            requestParams.put("message", htmlText);
             Message message = new Message(UUIDUtils.getUUID(), RequestMapping.SEND_MESSAGE, requestParams);
             ClientRope.serverConnector.sendMessage(message);
 
