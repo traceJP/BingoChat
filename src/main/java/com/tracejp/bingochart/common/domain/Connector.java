@@ -42,7 +42,6 @@ public abstract class Connector {
                 InputStream inputStream = socket.getInputStream();
                 ObjectInputStream objectInputStream;
                 while (!socket.isClosed()) {
-                    // TODO FIXED 客户端这里启了一个线程 然后在GUI出现后 该线程就终止了
                     // 优化 需要改成心跳连接机制
                     if (inputStream.available() > 0) {
                         objectInputStream = new ObjectInputStream(inputStream);

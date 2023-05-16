@@ -1,6 +1,7 @@
 package src.main.java.com.tracejp.bingochart.client;
 
 import src.main.java.com.tracejp.bingochart.client.gui.ChatGUI;
+import src.main.java.com.tracejp.bingochart.client.gui.LaunchGUI;
 import src.main.java.com.tracejp.bingochart.common.domain.Connector;
 import src.main.java.com.tracejp.bingochart.common.utils.MD5Utils;
 
@@ -17,7 +18,7 @@ public class ClientRope {
     /**
      * 当前客户端 username
      */
-    public static String username = "traceJP";  // TODO 暂时写死
+    public static String username = "";
 
     /**
      * uuid
@@ -27,5 +28,6 @@ public class ClientRope {
     }
 
     public static ChatGUI chatGUI;
+    public static LaunchGUI launchGUI;
 
 }

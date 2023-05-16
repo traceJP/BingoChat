@@ -1,8 +1,9 @@
 package src.main.java.com.tracejp.bingochart.client;
 
 import src.main.java.com.tracejp.bingochart.client.gui.ChatGUI;
+import src.main.java.com.tracejp.bingochart.client.gui.LaunchGUI;
 import src.main.java.com.tracejp.bingochart.client.gui.listener.ChatGUIListener;
-import src.main.java.com.tracejp.bingochart.common.constant.AddressConstant;
+import src.main.java.com.tracejp.bingochart.client.gui.listener.LaunchGUIListener;
 
 import javax.swing.*;
 
@@ -16,10 +17,6 @@ public class ClientGUI implements Runnable {
 
     public static final String TITLE = "BingoChat（Client α1.0）";
 
-    public static final Integer WINDOW_WIDTH = 1000;
-
-    public static final Integer WINDOW_HEIGHT = 600;
-
     public static JFrame clientGUI;
 
     @Override
@@ -29,25 +26,31 @@ public class ClientGUI implements Runnable {
         clientGUI.setResizable(false);
         clientGUI.setLocationRelativeTo(null);
         clientGUI.setVisible(true);
-        openChatPage();
+        openLaunchPage();
     }
 
-    private void openChatPage() {
-        // 与服务器建立连接
-        ClientRope.serverConnector = new ClientConnector(
-                AddressConstant.SERVER_ADDRESS_DEFAULT,
-                AddressConstant.SERVER_PORT_DEFAULT
-        );
-
-        // 初始化聊天页面
+    public static void openChatPage() {
+        // 初始化聊天页面 & 监听器
         ChatGUI chatGUI = new ChatGUI();
         chatGUI.initChatGUI();
-        clientGUI.setContentPane(chatGUI.chatPage);
-        clientGUI.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-        ClientRope.chatGUI = chatGUI;
-        ChatGUIListener chatGUIListener = new ChatGUIListener();
+        ChatGUIListener chatGUIListener = new ChatGUIListener(chatGUI);
         chatGUIListener.initAllListener();
         chatGUIListener.initAllResource();
+        clientGUI.setContentPane(chatGUI);
+        clientGUI.setSize(1000, 600);
+        ClientRope.chatGUI = chatGUI;
+    }
+
+    public static void openLaunchPage() {
+        // 初始化启动页面 & 监听器
+        LaunchGUI launchGUI = new LaunchGUI();
+        launchGUI.initLaunchGUI();
+        LaunchGUIListener launchGUIListener = new LaunchGUIListener(launchGUI);
+        launchGUIListener.initAllListener();
+        clientGUI.setContentPane(launchGUI);
+        clientGUI.setSize(500, 300);
+        ClientRope.launchGUI = launchGUI;
+
     }
 
 }

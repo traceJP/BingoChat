@@ -35,7 +35,11 @@ public class ChatGUIListener {
 
     private static final int ROOM_INFO_PERIODIC_REFRESH_TIME = 10;
 
-    private final ChatGUI chatGUI = ClientRope.chatGUI;
+    private final ChatGUI chatGUI;
+
+    public ChatGUIListener(ChatGUI chatGUI) {
+        this.chatGUI = chatGUI;
+    }
 
 
     public void initAllListener() {
@@ -58,38 +62,58 @@ public class ChatGUIListener {
         HashMap<String, Object> onlineMessageParams = new HashMap<>();
         onlineMessageParams.put("uuid", userUUID);
         onlineMessageParams.put("username", ClientRope.username);
-        Message onlineMassage = new Message(
+        Message onlineMessage = new Message(
                 UUIDUtils.getUUID(),
                 RequestMapping.ONLINE,
                 onlineMessageParams
         );
-        connector.sendMessage(onlineMassage);
+        connector.sendMessage(onlineMessage);
 
         // 获取配置信息
-        Message queryFontConfigMassage = new Message(
+        Message queryFontConfigMessage = new Message(
                 UUIDUtils.getUUID(),
                 RequestMapping.QUERY_FONT_CONFIG,
                 Collections.singletonMap("uuid", userUUID)
         );
-        connector.sendMessage(queryFontConfigMassage);
+        connector.sendMessage(queryFontConfigMessage);
 
         // 获取聊天记录
-        Message queryChatLogMassage = new Message(
+        Message queryChatLogMessage = new Message(
                 UUIDUtils.getUUID(),
                 RequestMapping.QUERY_CHAT_LOG,
                 Collections.singletonMap("number", MAX_QUERY_CHAT_LOG)
         );
-        connector.sendMessage(queryChatLogMassage);
+        connector.sendMessage(queryChatLogMessage);
+
+        // 发送上线消息
+        Map<String, Object> requestParams = new HashMap<>();
+        requestParams.put("uuid", ClientRope.getUserUUID());
+        final String message = "用户 【 " + ClientRope.username + " 】 上线了...";
+        requestParams.put("message", message);
+        Message onlineSendMessage = new Message(
+                UUIDUtils.getUUID(),
+                RequestMapping.SEND_MESSAGE,
+                requestParams
+        );
+        connector.sendMessage(onlineSendMessage);
+
+        // 加载上线消息到本地聊天框
+        HTMLDocument document = (HTMLDocument) chatGUI.chatLogTextArea.getDocument();
+        try {
+            document.insertAfterEnd(document.getCharacterElement(document.getLength()), message);
+        } catch (BadLocationException | IOException e) {
+            throw new RuntimeException(e);
+        }
 
         // 心跳获取 房间信息
         Thread thread = new Thread(() -> {
             for (; ; ) {
-                Message queryRoomInfoMassage = new Message(
+                Message queryRoomInfoMessage = new Message(
                         UUIDUtils.getUUID(),
                         RequestMapping.QUERY_ROOM_INFO,
                         null
                 );
-                connector.sendMessage(queryRoomInfoMassage);
+                connector.sendMessage(queryRoomInfoMessage);
                 try {
                     TimeUnit.SECONDS.sleep(ROOM_INFO_PERIODIC_REFRESH_TIME);
                 } catch (InterruptedException e) {

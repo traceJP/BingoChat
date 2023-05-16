@@ -9,12 +9,7 @@ import java.awt.*;
  * @author traceJP
  * @since 2023/5/9 8:55
  */
-public class ChatGUI {
-
-    /**
-     * root
-     */
-    public JPanel chatPage;
+public class ChatGUI extends JPanel {
 
     public JButton sendButton;
     public JButton refreshButton;
@@ -30,11 +25,9 @@ public class ChatGUI {
 
 
     public void initChatGUI() {
-        JPanel main = new JPanel();
-        main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
-        main.add(initControllerPanel());
-        main.add(initChatPanel());
-        chatPage = main;
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        add(initControllerPanel());
+        add(initChatPanel());
     }
 
     private JPanel initControllerPanel() {
