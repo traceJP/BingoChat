@@ -33,24 +33,23 @@ public class ClientGUI implements Runnable {
         // 初始化聊天页面 & 监听器
         ChatGUI chatGUI = new ChatGUI();
         chatGUI.initChatGUI();
-        ChatGUIListener chatGUIListener = new ChatGUIListener(chatGUI);
-        chatGUIListener.initAllListener();
-        chatGUIListener.initAllResource();
         clientGUI.setContentPane(chatGUI);
         clientGUI.setSize(1000, 600);
         ClientRope.chatGUI = chatGUI;
+        ChatGUIListener chatGUIListener = new ChatGUIListener(chatGUI);
+        chatGUIListener.initAllListener();
+        chatGUIListener.initAllResource();
     }
 
     public static void openLaunchPage() {
         // 初始化启动页面 & 监听器
         LaunchGUI launchGUI = new LaunchGUI();
         launchGUI.initLaunchGUI();
-        LaunchGUIListener launchGUIListener = new LaunchGUIListener(launchGUI);
-        launchGUIListener.initAllListener();
         clientGUI.setContentPane(launchGUI);
         clientGUI.setSize(500, 300);
         ClientRope.launchGUI = launchGUI;
-
+        LaunchGUIListener launchGUIListener = new LaunchGUIListener(launchGUI);
+        launchGUIListener.initAllListener();
     }
 
 }
