@@ -81,7 +81,7 @@ public class LaunchGUI extends JPanel {
         JPanel main = new JPanel();
         main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
 
-        JLabel proxyLabel = new JLabel("代理设置：");
+        JLabel proxyLabel = new JLabel("代理设置（host-port）：");
         proxyLabel.setFont(new Font("宋体", Font.PLAIN, 15));
         main.add(proxyLabel);
 
