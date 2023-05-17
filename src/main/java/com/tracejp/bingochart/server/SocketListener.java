@@ -15,6 +15,8 @@ import java.net.Socket;
  */
 public class SocketListener implements Runnable {
 
+    private static final String JAR_PROPERTIES_PORT = "port";
+
     public ServerSocket serverSocket;
 
     public volatile Boolean isRunning;
@@ -23,8 +25,9 @@ public class SocketListener implements Runnable {
     @Override
     public void run() {
         // 开启服务器
+        final String port = System.getProperty(JAR_PROPERTIES_PORT, AddressConstant.SERVER_PORT_DEFAULT + "");
         try {
-            serverSocket = new ServerSocket(AddressConstant.SERVER_PORT_DEFAULT);
+            serverSocket = new ServerSocket(Integer.parseInt(port));
         } catch (IOException e) {
             throw new RuntimeException("服务器启动失败 原因可能是：端口{" + AddressConstant.SERVER_PORT_DEFAULT + "}被占用");
         }

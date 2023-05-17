@@ -88,7 +88,7 @@ public class ChatGUIListener {
         // 发送上线消息
         Map<String, Object> requestParams = new HashMap<>();
         requestParams.put("uuid", ClientRope.getUserUUID());
-        final String message = "用户 【 " + ClientRope.username + " 】 上线了...";
+        final String message = formatTextBySystemInformToHtml("用户 【 " + ClientRope.username + " 】 上线了...");
         requestParams.put("message", message);
         Message onlineSendMessage = new Message(
                 UUIDUtils.getUUID(),
@@ -202,6 +202,9 @@ public class ChatGUIListener {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 JScrollBar scrollBar = chatGUI.chatLogScrollPane.getVerticalScrollBar();
+                if (scrollBar == null) {  // 解决初始化抖动
+                    return;
+                }
                 new Thread(() -> SwingUtilities.invokeLater(() -> {
                     scrollBar.setValue(scrollBar.getMaximum());
                     try {  // 防止文档插入过快导致滚动条无法滚动到最底部
@@ -256,8 +259,11 @@ public class ChatGUIListener {
             );
             ClientRope.serverConnector.sendMessage(offlineMessage);
 
-            // TODO 关闭窗口
+            // 本地下线
+            ClientRope.serverConnector.closeSocket();
 
+            // 退出到启动页面
+            ClientGUI.openLaunchPage();
         };
     }
 
